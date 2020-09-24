@@ -19,10 +19,25 @@ KeyEventListener::KeyEventListener(Event numEvt, Event strEvt, bool verbose=fals
 
 }
 void KeyEventListener::onNumber(const EventArgs &iArgs){
-    std::cout<<static_cast<const NumEventArgs&>(iArgs).getData()<<std::endl;
+    if(_verbose){
+        std::cout<<"Number event result: "<<static_cast<const NumEventArgs&>(iArgs).getData()<<std::endl;
+        if(convertNumStr(static_cast<const NumEventArgs&>(iArgs).getData())==convertRes::fit)
+            std::cout<<"    The source string could be converted to \"long double\" type,"<<std::endl<<"    and fits to the limits of this type."<<std::endl<<std::scientific<<"    Its value in scientific notation is: "<<std::stold(static_cast<const NumEventArgs&>(iArgs).getData())<<std::endl<<std::endl;
+
+        else
+            std::cout<<"    The source string is a numeric string,"<<std::endl<<"    but its value does not fit to the \"long double\" type."<<std::endl<<std::endl;
+    }else{
+        std::cout<<static_cast<const NumEventArgs&>(iArgs).getData()<<std::endl;
+    }
 }
+
+
 void KeyEventListener::onString(const EventArgs &iArgs){
-    std::cout<<static_cast<const StrEventArgs&>(iArgs).getData()<<std::endl;
+    if(_verbose){
+        std::cout<<"String event result: "<<static_cast<const StrEventArgs&>(iArgs).getData()<<std::endl<<std::endl;
+    }else{
+        std::cout<<static_cast<const StrEventArgs&>(iArgs).getData()<<std::endl;
+    }
 }
 void KeyEventListener::processNumEvent(const std::string & strIn){
     _iEventNum.Raise(NumEventArgs(strIn));
@@ -32,6 +47,18 @@ void KeyEventListener::processStrEvent(const std::string & strIn){
 }
 
 /* UTILITY ----------------------------------------------------------*/
+convertRes convertNumStr(const std::string& inStr){
+    long double resLD{};
+    try {
+        resLD=std::stold(inStr);
+    } catch (std::invalid_argument _) {
+        return convertRes::fail;
+    }
+    catch(std::out_of_range _){
+        return  convertRes::not_fit;
+    }
+    return convertRes::fit;
+}
 
 std::vector<std::string> split_string(std::string input_string)
 {

@@ -44,6 +44,7 @@ private:
 };
 
 /* UTILITY ----------------------------------------------------------*/
-
+enum convertRes{fail, fit, not_fit};
+convertRes convertNumStr(const std::string& inStr);
 std::vector<std::string> split_string(std::string);
 }
