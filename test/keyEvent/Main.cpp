@@ -17,6 +17,7 @@ int main(int argc, char** argv){
         string inStr;
         vector<string> stringVec;
         cin>>inStr;
+        cout<<endl;
         stringVec=cae::split_string(inStr);
         for(auto sii:stringVec)
             if(cae::convertNumStr(sii)!=cae::convertRes::fail)
@@ -25,7 +26,6 @@ int main(int argc, char** argv){
                 keyEvtListener.processStrEvent(sii);
 
     }
-
 
     return 0;
 }

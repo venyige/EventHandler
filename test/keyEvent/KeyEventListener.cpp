@@ -13,40 +13,51 @@ const std::string& StrEventArgs::getData() const{
     return this->_inStr;
 }
 
-KeyEventListener::KeyEventListener(Event numEvt, Event strEvt, bool verbose=false):_iEventNum{numEvt}, _iEventStr{strEvt}, _verbose{verbose}{
+KeyEventListener::KeyEventListener(Event numEvt, Event strEvt, bool verbose=false):
+    _iEventNum{numEvt},
+    _iEventStr{strEvt},
+    _verbose{verbose}{
     _iEventStr+=([this](const EventArgs& eA){this->onString(eA);});
     _iEventNum+=([this](const EventArgs& eA){this->onNumber(eA);});
 
 }
+
 void KeyEventListener::onNumber(const EventArgs &iArgs){
     if(_verbose){
         std::cout<<"Number event result: "<<static_cast<const NumEventArgs&>(iArgs).getData()<<std::endl;
         if(convertNumStr(static_cast<const NumEventArgs&>(iArgs).getData())==convertRes::fit)
-            std::cout<<"    The source string could be converted to \"long double\" type,"<<std::endl<<"    and fits to the limits of this type."<<std::endl<<std::scientific<<"    Its value in scientific notation is: "<<std::stold(static_cast<const NumEventArgs&>(iArgs).getData())<<std::endl<<std::endl;
+            std::cout<<"    The source string could be converted to \"long double\" type,"<<std::endl<<
+                       "    and fits to the limits of this type."<<std::endl<<std::scientific<<
+                       "    Its value in scientific notation is: "<<
+                       std::stold(static_cast<const NumEventArgs&>(iArgs).getData())<<std::endl<<std::endl;
 
         else
-            std::cout<<"    The source string is a numeric string,"<<std::endl<<"    but its value does not fit to the \"long double\" type."<<std::endl<<std::endl;
+            std::cout<<"    The source string is a numeric string,"<<std::endl<<
+                       "    but its value does not fit to the \"long double\" type."<<std::endl<<std::endl;
     }else{
         std::cout<<static_cast<const NumEventArgs&>(iArgs).getData()<<std::endl;
     }
 }
 
-
 void KeyEventListener::onString(const EventArgs &iArgs){
     if(_verbose){
-        std::cout<<"String event result: "<<static_cast<const StrEventArgs&>(iArgs).getData()<<std::endl<<std::endl;
+        std::cout<<"String event result: "<<static_cast<const StrEventArgs&>(iArgs).getData()<<
+                   std::endl<<std::endl;
     }else{
         std::cout<<static_cast<const StrEventArgs&>(iArgs).getData()<<std::endl;
     }
 }
+
 void KeyEventListener::processNumEvent(const std::string & strIn){
     _iEventNum.Raise(NumEventArgs(strIn));
 }
+
 void KeyEventListener::processStrEvent(const std::string & strIn){
     _iEventStr.Raise(StrEventArgs(strIn));
 }
 
 /* UTILITY ----------------------------------------------------------*/
+
 convertRes convertNumStr(const std::string& inStr){
     long double resLD{};
     try {
@@ -64,7 +75,10 @@ std::vector<std::string> split_string(std::string input_string)
 {
     std::vector<std::string> retVec;
     size_t iii = 0;
-    std::string::iterator new_end = std::unique(input_string.begin(), input_string.end(), [](const char &lead, const char &end) {
+    std::string::iterator new_end = std::unique(input_string.begin(),
+                                                input_string.end(),
+                                                [](const char &lead,
+                                                const char &end) {
         return lead == end and end == ' ';
     });
 
