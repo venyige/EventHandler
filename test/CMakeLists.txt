@@ -1,2 +1,1 @@
-#FIXME: not implemented yet
-#add_subdirectory(keyEvent)
+add_subdirectory(keyEvent)
