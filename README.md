@@ -43,3 +43,16 @@ The processing is limited to put the strings to the standard output, so there wo
 
 To invoke the callbacks, the `Event::Raise(const EventArgs& iArgs)` is to be called, so functionally there is no need to store the `Event` instances in the [`KeyEventListener`](test/keyEvent/KeyEventListener.h).
 While functionally there is no need for this, in a real-life application there is, because we should handle the events via the highest level access possible. So, instead of passing references, I have moved them into the  [`KeyEventListener`](test/keyEvent/KeyEventListener.h) instance in order to handle out and bind their life cycle to that of the  [`KeyEventListener`](test/keyEvent/KeyEventListener.h) as best practice in a real-life scenario, where there are lots of event and event listener instances existing simultaneously or in overlapping life cycles.
+### Build and run 
+```
+$: git clone https://github.com/venyige/EventHandler.git
+$: mkdir build&&cd $_
+$: cmake ../EventHandler/
+$: cmake --build .
+$: cd test/keyEvent
+$: ./keyEvent 
+``` 
+Or, to run in verbose mode:
+```
+$: ./keyEvent -v
+``` 
